@@ -124,7 +124,7 @@ var G={started:!1,lv:0,sc:0,paused:!1,px:400,py:300,ang:0,spd:0,sprint:!1,hr:70,
 var LV=[
   // LEVEL 1: Shelf Memory — Picture items + Drag & Drop
   {n:'📚 Shelf Memory',d:'Memorize the shelf, then drag items back!',
-   s:function(){G.px=700;G.py=520;G.hr=70;G.thr=70;G.mx=100;G.my=80;G.ms=1.2;G.mst='patrol';
+   s:function(){G.px=700;G.py=520;G.hr=70;G.thr=70;G.mx=100;G.my=80;G.ms=1.7;G.mst='patrol';
     var items=[{ic:'report',label:'Reports',color:'#4a90d9'},{ic:'pen',label:'Pens',color:'#e94560'},{ic:'clip',label:'Clips',color:'#c0c0c0'},{ic:'folder',label:'Folders',color:'#c4956a'},{ic:'chart',label:'Charts',color:'#00d2d3'}];
     var sx=100,sy=150,sw=140,sh=130,cols=5;
     G.shelfSlots=[];G.shelfItems=[];
@@ -135,7 +135,7 @@ var LV=[
     G.obj='Memorize the shelf layout! Drag items back.'}},
   // LEVEL 2: Maze Exit
   {n:'🗺️ Maze Exit',d:'Find the exit! Monster patrols the maze.',
-   s:function(){G.px=50;G.py=50;G.hr=70;G.mx=600;G.my=30;G.ms=1.5;G.mst='patrol';
+   s:function(){G.px=50;G.py=50;G.hr=70;G.mx=600;G.my=30;G.ms=2.0;G.mst='patrol';
     G.mcs=35;
     G.mz=[[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,1,1,1,1,0],[0,1,0,0,0,0,0,1,0,1,0,1,0,1,0,1,0,1,0,0,0,1,0],[0,1,0,1,1,1,0,1,1,1,0,1,0,1,0,1,1,1,0,0,0,1,0],[0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],[0,1,0,1,0,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,0,1,0],[0,1,0,1,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,0,1,0],[0,1,0,1,1,1,1,1,0,1,1,1,0,1,0,1,0,0,0,1,0,1,0],[0,1,0,0,0,0,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,1,0],[0,1,1,1,1,1,0,1,1,1,0,1,1,1,0,0,0,1,0,1,0,1,0],[0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0],[0,1,1,1,0,1,0,1,1,1,1,1,0,1,1,1,0,1,1,1,0,1,0],[0,0,0,1,0,1,0,1,0,0,0,1,0,1,0,1,0,0,0,0,0,1,0],[0,1,1,1,0,1,1,1,0,0,0,1,1,1,0,1,1,1,1,1,1,1,0],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]];
     // Exit at bottom-right
@@ -146,7 +146,7 @@ var LV=[
 
   // LEVEL 3: Key Hunt + PC Build
   {n:'🔑 PC Builder',d:'Find keys, unlock doors, carry parts to the build desk!',
-   s:function(){G.px=400;G.py=550;G.hr=70;G.mx=100;G.my=80;G.ms=1.6;G.mst='patrol';
+   s:function(){G.px=400;G.py=550;G.hr=70;G.mx=100;G.my=80;G.ms=2.1;G.mst='patrol';
     var doorPos=[{x:150,y:100},{x:650,y:100},{x:150,y:380},{x:650,y:380}];
     var keyPos=[{x:400,y:200,c:!1},{x:200,y:500,c:!1},{x:600,y:500,c:!1},{x:80,y:300,c:!1}];
     var parts=['🔌 Power Supply','💾 RAM','💿 Boot Drive','🖥️ Display'];
@@ -162,7 +162,7 @@ var LV=[
 
   // LEVEL 4: Coffee Dash
   {n:'☕ Coffee Dash',d:'Deliver coffee to 4 coworkers. Sprint and hide!',
-   s:function(){G.px=400;G.py=550;G.hr=70;G.mx=100;G.my=100;G.ms=1.7;G.mst='patrol';
+   s:function(){G.px=400;G.py=550;G.hr=70;G.mx=100;G.my=100;G.ms=2.2;G.mst='patrol';
     G.coworkers=[{x:120,y:120,ic:'👩‍💼',n:'Tina',wants:'☕ Latte',done:!1},{x:680,y:150,ic:'👨‍💻',n:'Gary',wants:'☕ Espresso',done:!1},{x:150,y:400,ic:'👩‍🔧',n:'Olivia',wants:'☕ Mocha',done:!1},{x:650,y:420,ic:'👨‍🏭',n:'Joe',wants:'☕ Americano',done:!1}];
     G.coffeeMachine={x:400,y:280};G.hasCoffee=!1;G.currentCoffee='';
     G.tot=4;G.col=0;G.items=[];
@@ -171,7 +171,7 @@ var LV=[
 
   // LEVEL 5: CEO Escape
   {n:'👔 CEO Escape',d:'Avoid cameras, get the break slip, escape!',
-   s:function(){G.px=80;G.py=540;G.hr=70;G.mx=400;G.my=300;G.ms=1.9;G.mst='patrol';
+   s:function(){G.px=80;G.py=540;G.hr=70;G.mx=400;G.my=300;G.ms=2.4;G.mst='patrol';
     G.breakSlip={x:680,y:80,got:!1};G.tot=1;G.col=0;G.items=[];
     // Cameras: x,y,w,h,angle range
     G.cameras=[{x:200,y:150,w:200,h:100,ang:0},{x:500,y:350,w:200,h:100,ang:Math.PI},{x:300,y:100,w:100,h:200,ang:Math.PI/2}];
@@ -211,7 +211,7 @@ function up(){
   var hp=(G.hr-55)/135*100;document.getElementById('hrb').style.width=hp+'%';var hn=document.getElementById('hrn');if(G.hr<100){document.getElementById('hrb').style.background='linear-gradient(90deg,#00d2d3,#54a0ff)';hn.style.color='#00d2d3'}else if(G.hr<130){document.getElementById('hrb').style.background='linear-gradient(90deg,#feca57,#ff9f43)';hn.style.color='#feca57'}else{document.getElementById('hrb').style.background='linear-gradient(90deg,#e94560,#ff6b6b)';hn.style.color='#e94560'}hn.textContent=G.hr;
 
   // Monster AI
-  if(G.mst==='patrol'){if(!G.pt||Math.random()<.01)G.pt={x:40+Math.random()*(W-80),y:40+Math.random()*(H-80)};var mdx=G.pt.x-G.mx,mdy=G.pt.y-G.my,ml=Math.sqrt(mdx*mdx+mdy*mdy);if(ml>2){G.mx+=mdx/ml*G.ms;G.my+=mdy/ml*G.ms}G.ma=Math.atan2(mdy,mdx);if(G.hht>90&&!G.hid){G.mst='charging';G.mct={x:G.px,y:G.py};no('It heard your heartbeat!','dg')}}
+  if(G.mst==='patrol'){if(!G.pt||Math.random()<.01)G.pt={x:40+Math.random()*(W-80),y:40+Math.random()*(H-80)};var mdx=G.pt.x-G.mx,mdy=G.pt.y-G.my,ml=Math.sqrt(mdx*mdx+mdy*mdy);if(ml>2){G.mx+=mdx/ml*G.ms;G.my+=mdy/ml*G.ms}G.ma=Math.atan2(mdy,mdx);if(G.hht>60&&!G.hid){G.mst='charging';G.mct={x:G.px,y:G.py};no('It heard your heartbeat!','dg')}}
   else if(G.mst==='charging'){mdx=G.mct.x-G.mx;mdy=G.mct.y-G.my;ml=Math.sqrt(mdx*mdx+mdy*mdy);if(ml>2){G.mx+=mdx/ml*G.ms*2;G.my+=mdy/ml*G.ms*2}G.ma=Math.atan2(mdy,mdx);if(G.hid){G.mst='sniffing';G.mcd=120}var pdx=G.px-G.mx,pdy=G.py-G.my,pd=Math.sqrt(pdx*pdx+pdy*pdy);if(pd<32&&!G.hid)gO('The monster caught you!')}
   else if(G.mst==='sniffing'){G.mcd--;if(G.mcd<=0){G.mst='patrol';if(!G.hid&&G.hr>100)G.hht=0}mdx=(G.px+Math.sin(Date.now()/500)*50)-G.mx;mdy=(G.py+Math.cos(Date.now()/500)*50)-G.my;ml=Math.sqrt(mdx*mdx+mdy*mdy);if(ml>2){G.mx+=mdx/ml*G.ms*.5;G.my+=mdy/ml*G.ms*.5}if(!G.hid&&G.hr>120){G.mst='charging';G.mct={x:G.px,y:G.py};no('It heard you!','dg')}}
   var pdx=G.px-G.mx,pdy=G.py-G.my;if(Math.sqrt(pdx*pdx+pdy*pdy)<28&&!G.hid&&G.mst==='charging')gO('The monster caught you!');
