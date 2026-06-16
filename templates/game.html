@@ -87,7 +87,18 @@ canvas{display:block;position:absolute;top:50%;left:50%;transform:translate(-50%
     <button class="btn bp" onclick="confirmSetup()" style="margin-top:18px">▶ CLOCK IN</button>
   </div>
 
-  <!-- Pause -->
+  <!-- Story Intro -->
+  <div class="ov hid" id="story">
+    <h2 style="color:#feca57;font-size:26px;margin-bottom:12px">📋 Your Mission</h2>
+    <p style="color:#ccc;font-size:15px;max-width:480px;text-align:center;line-height:1.7;margin-bottom:24px">
+      You're an AveHr employee dying for a <span style="color:#feca57">vacation</span>.<br>
+      But CEO Strictwell won't approve it.<br><br>
+      <span style="color:#e94560">"Complete these tasks first,"</span> he says.<br>
+      Finish all 5 levels to earn your break.<br><br>
+      <span style="color:#a0a0c0;font-size:12px">Watch your heart rate — the monster hears everything.</span>
+    </p>
+    <button class="btn bp" onclick="document.getElementById('story').classList.add('hid');sL(0)">▶ BEGIN</button>
+  </div>
   <div class="ov hid" id="pause">
     <h2 style="color:#fff;font-size:28px;margin-bottom:18px">⏸ Paused</h2>
     <div style="display:flex;flex-direction:column;gap:10px">
@@ -105,7 +116,7 @@ var CHARS=[{id:0,n:'Alex',h:'#4a3728',sk:'#fddcc8',sh:'#5b9bd5'},{id:1,n:'Sam',h
 var sc=0,pn='';
 
 function bCG(){var h='';CHARS.forEach(function(c,i){h+='<div class="cc'+(i===sc?' sel':'')+'" onclick="sc='+i+';bCG()"><svg width="60" height="65"><circle cx="30" cy="18" r="13" fill="'+c.sk+'"/><ellipse cx="30" cy="13" rx="14" ry="8" fill="'+c.h+'"/><circle cx="25" cy="17" r="2.5" fill="#1a0a00"/><circle cx="35" cy="17" r="2.5" fill="#1a0a00"/><path d="M26 22 Q30 24 34 22" stroke="#8b5a3a" stroke-width="1.5" fill="none"/><rect x="20" y="28" width="20" height="16" rx="4" fill="'+c.sh+'"/><rect x="18" y="42" width="6" height="10" rx="3" fill="'+c.sh+'"/><rect x="36" y="42" width="6" height="10" rx="3" fill="'+c.sh+'"/><rect x="14" y="50" width="10" height="6" rx="3" fill="#e94560"/><rect x="36" y="50" width="10" height="6" rx="3" fill="#e94560"/></svg><div class="cn">'+c.n+'</div></div>'});document.getElementById('cg').innerHTML=h}
-function confirmSetup(){pn='Worker';document.getElementById('setup').classList.add('hid');sL(0)}
+function confirmSetup(){pn='Worker';document.getElementById('setup').classList.add('hid');document.getElementById('story').classList.remove('hid')}
 bCG();
 
 var G={started:!1,lv:0,sc:0,paused:!1,px:400,py:300,ang:0,spd:0,sprint:!1,hr:70,thr:70,hht:0,hid:!1,mx:100,my:100,ms:1.5,ma:0,mst:'patrol',mcd:0,pt:{x:400,y:300},items:[],col:0,tot:0,hs:[],obj:'',k:{w:!1,a:!1,s:!1,d:!1,sh:!1,sp:!1,spw:!1,esc:!1,escw:!1},go:!1,gw:!1,br:!1,bp:0,bt:0,bs:0,bn:3,mz:null,mcs:0,ki:null,doors:[],doorItems:[],compParts:[],shelfItems:[],shelfSlots:[],mp:'',mt:0,coworkers:[],orders:[],cameras:[],dragItem:null,dragOX:0,dragOY:0,mouseX:0,mouseY:0,mouseDown:!1};
