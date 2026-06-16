@@ -82,9 +82,8 @@ canvas{display:block;position:absolute;top:50%;left:50%;transform:translate(-50%
   <!-- Setup -->
   <div class="ov" id="setup">
     <h2>👤 New Employee</h2>
-    <div class="sub">Enter your name and choose your look</div>
+    <div class="sub">Enter your name to clock in</div>
     <div class="name-row"><input id="name-in" placeholder="Your name..." maxlength="16" autofocus></div>
-    <div class="char-grid" id="cg"></div>
     <button class="btn bp" onclick="confirmSetup()" style="margin-top:18px">▶ CLOCK IN</button>
   </div>
 
@@ -102,12 +101,10 @@ canvas{display:block;position:absolute;top:50%;left:50%;transform:translate(-50%
 <script>
 var c=document.getElementById('c'),ctx=c.getContext('2d'),W=800,H=600;c.width=W;c.height=H;
 
-var CHARS=[{id:0,n:'Alex',h:'#4a3728',sk:'#fddcc8',sh:'#5b9bd5'},{id:1,n:'Sam',h:'#c4956a',sk:'#ffecd2',sh:'#3a9b5b'},{id:2,n:'Jordan',h:'#1a1a1a',sk:'#8b6b4a',sh:'#c23152'},{id:3,n:'Riley',h:'#e891b0',sk:'#fce4d6',sh:'#8b5cf6'},{id:4,n:'Morgan',h:'#2c2c2c',sk:'#f5d6c6',sh:'#ecf0f1'}];
-var sc=0,pn='';
+var CH={h:'#4a3728',sk:'#fddcc8',sh:'#5b9bd5'};
+var pn='';
 
-function bCG(){var h='';CHARS.forEach(function(c,i){h+='<div class="cc'+(i===sc?' sel':'')+'" onclick="sc='+i+';bCG()"><svg width="60" height="65"><circle cx="30" cy="18" r="13" fill="'+c.sk+'"/><ellipse cx="30" cy="13" rx="14" ry="8" fill="'+c.h+'"/><circle cx="25" cy="17" r="2.5" fill="#1a0a00"/><circle cx="35" cy="17" r="2.5" fill="#1a0a00"/><path d="M26 22 Q30 24 34 22" stroke="#8b5a3a" stroke-width="1.5" fill="none"/><rect x="20" y="28" width="20" height="16" rx="4" fill="'+c.sh+'"/><rect x="18" y="42" width="6" height="10" rx="3" fill="'+c.sh+'"/><rect x="36" y="42" width="6" height="10" rx="3" fill="'+c.sh+'"/><rect x="14" y="50" width="10" height="6" rx="3" fill="#e94560"/><rect x="36" y="50" width="10" height="6" rx="3" fill="#e94560"/></svg><div class="cn">'+c.n+'</div></div>'});document.getElementById('cg').innerHTML=h}
 function confirmSetup(){var n=document.getElementById('name-in').value.trim();if(!n||n.length<2){document.getElementById('name-in').style.borderColor='#e94560';setTimeout(function(){document.getElementById('name-in').style.borderColor=''},1500);return}pn=n;document.getElementById('setup').classList.add('hid');sL(0)}
-bCG();
 
 var G={started:!1,lv:0,sc:0,paused:!1,px:400,py:300,ang:0,spd:0,sprint:!1,hr:70,thr:70,hht:0,hid:!1,mx:100,my:100,ms:1.5,ma:0,mst:'patrol',mcd:0,pt:{x:400,y:300},items:[],col:0,tot:0,hs:[],obj:'',k:{w:!1,a:!1,s:!1,d:!1,sh:!1,sp:!1,spw:!1,esc:!1,escw:!1},go:!1,gw:!1,br:!1,bp:0,bt:0,bs:0,bn:3,mz:null,mcs:0,ki:null,doors:[],doorItems:[],compParts:[],shelfItems:[],shelfSlots:[],mp:'',mt:0,coworkers:[],orders:[],cameras:[],dragItem:null,dragOX:0,dragOY:0,mouseX:0,mouseY:0,mouseDown:!1};
 
@@ -284,7 +281,7 @@ function no(m,t){var s=document.getElementById('st');s.textContent=m;if(t==='dg'
 function dr(){
   ctx.clearRect(0,0,W,H);ctx.fillStyle='#16162a';ctx.fillRect(0,0,W,H);
   ctx.strokeStyle='rgba(255,255,255,.025)';for(var x=0;x<W;x+=50){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(var y=0;y<H;y+=50){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
-  var L=LV[G.lv],ch=CHARS[sc],closeMon=!1;
+  var L=LV[G.lv],ch=CH,closeMon=!1;
 
   // Maze walls
   if(L.n==='🗺️ Maze Exit'&&G.mz){var cs=G.mcs;for(var my=0;my<G.mz.length;my++)for(var mx=0;mx<G.mz[0].length;mx++)if(G.mz[my][mx]===0){ctx.fillStyle='#2d3436';ctx.fillRect(mx*cs,my*cs,cs,cs);ctx.strokeStyle='#3d3d4d';ctx.strokeRect(mx*cs,my*cs,cs,cs)}}
