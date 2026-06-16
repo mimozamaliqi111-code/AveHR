@@ -133,18 +133,21 @@ var LV=[
     G.hs=[{x:7*G.mcs,y:3*G.mcs,w:30,h:30,l:''},{x:15*G.mcs,y:7*G.mcs,w:30,h:30,l:''}];
     G.obj='Find your way to the green EXIT!'}},
 
-  // LEVEL 3: Key Hunt + Computer Fix
-  {n:'🔑 Key Hunt',d:'Find keys, unlock doors, collect PC parts!',
+  // LEVEL 3: Key Hunt + PC Build
+  {n:'🔑 PC Builder',d:'Find keys, unlock doors, carry parts to the build desk!',
    s:function(){G.px=400;G.py=550;G.hr=70;G.mx=100;G.my=80;G.ms=1.6;G.mst='patrol';
-    // 4 locked doors, each has a PC part behind it
-    var doorPos=[{x:150,y:120},{x:650,y:120},{x:150,y:380},{x:650,y:380}];
-    var keyPos=[{x:400,y:200,c:!1},{x:200,y:480,c:!1},{x:600,y:480,c:!1},{x:80,y:300,c:!1}];
+    var doorPos=[{x:150,y:100},{x:650,y:100},{x:150,y:380},{x:650,y:380}];
+    var keyPos=[{x:400,y:200,c:!1},{x:200,y:500,c:!1},{x:600,y:500,c:!1},{x:80,y:300,c:!1}];
     var parts=['🔌 Power Supply','💾 RAM','💿 Boot Drive','🖥️ Display'];
-    G.ki=keyPos;G.doors=doorPos.map(function(d,i){return{x:d.x,y:d.y,w:60,h:30,locked:!0,part:parts[i],idx:i}});
-    G.compParts=[];
+    G.ki=keyPos;
+    G.doors=doorPos.map(function(d,i){return{x:d.x,y:d.y,w:60,h:30,locked:!0,part:parts[i],idx:i,opened:!1}});
+    G.compParts=[]; // Parts dropped on ground near doors
+    G.carriedPart=null; // Currently carrying
+    G.builtParts=[];
+    G.buildStation={x:400,y:320,w:80,h:50};
     G.tot=4;G.col=0;G.items=[];
-    G.hs=[{x:350,y:300,w:100,h:50,l:'Under Desk'},{x:500,y:150,w:100,h:50,l:'Behind Plant'}];
-    G.obj='Find keys, unlock doors, collect all 4 PC parts!'}},
+    G.hs=[{x:380,y:300,w:120,h:60,l:'🔧 Build Desk'}];
+    G.obj='Unlock doors, carry 4 parts to the Build Desk!'}},
 
   // LEVEL 4: Coffee Dash
   {n:'☕ Coffee Dash',d:'Deliver coffee to 4 coworkers. Sprint and hide!',
@@ -179,7 +182,7 @@ function tP(){G.paused=!G.paused;document.getElementById('pause').classList.togg
 function rL(){G.paused=!1;document.getElementById('pause').classList.add('hid');document.getElementById('msg').classList.remove('sh');sL(G.lv)}
 function toMenu(){G.paused=!1;G.go=!1;G.gw=!1;G.hid=!1;G.br=!1;document.getElementById('pause').classList.add('hid');document.getElementById('msg').classList.remove('sh');document.getElementById('bov').classList.remove('ac');document.getElementById('setup').classList.remove('hid')}
 
-function sL(idx){G.lv=idx;G.go=!1;G.gw=!1;G.hid=!1;G.br=!1;G.col=0;G.hr=70;G.thr=70;G.hht=0;G.items=[];G.ki=null;G.mz=null;G.mp='';G.mt=0;G.doors=[];G.doorItems=[];G.compParts=[];G.shelfItems=[];G.shelfSlots=[];G.coworkers=[];G.orders=[];G.cameras=[];G.hasCoffee=!1;G.breakSlip=null;G.dragItem=null;G.dragOX=0;G.dragOY=0;document.getElementById('msg').classList.remove('sh');LV[idx].s();document.getElementById('st').textContent=G.obj;document.getElementById('ins').textContent='WASD=Move | SHIFT=Sprint | SPACE=Hide | ESC=Pause';document.getElementById('hit').textContent='0/'+G.tot;document.getElementById('st').classList.remove('dg')}
+function sL(idx){G.lv=idx;G.go=!1;G.gw=!1;G.hid=!1;G.br=!1;G.col=0;G.hr=70;G.thr=70;G.hht=0;G.items=[];G.ki=null;G.mz=null;G.mp='';G.mt=0;G.doors=[];G.doorItems=[];G.compParts=[];G.carriedPart=null;G.builtParts=[];G.buildStation=null;G.shelfItems=[];G.shelfSlots=[];G.coworkers=[];G.orders=[];G.cameras=[];G.hasCoffee=!1;G.breakSlip=null;G.dragItem=null;G.dragOX=0;G.dragOY=0;document.getElementById('msg').classList.remove('sh');LV[idx].s();document.getElementById('st').textContent=G.obj;document.getElementById('ins').textContent='WASD=Move | SHIFT=Sprint | SPACE=Hide | ESC=Pause';document.getElementById('hit').textContent='0/'+G.tot;document.getElementById('st').classList.remove('dg')}
 
 // ===== UPDATE =====
 function up(){
@@ -210,11 +213,15 @@ function up(){
     if(G.mp==='show'){G.mt--;if(G.mt<=0){G.mp='hide';G.items.forEach(function(it,i){it.x=560+(i*25)%180;it.y=420+(i*35)%140;it.c=!1;it.placed=null})}}
   }
   if(L.n==='🗺️ Maze Exit'&&G.exitPos){var ex=G.px-G.exitPos.x,ey=G.py-G.exitPos.y;if(Math.sqrt(ex*ex+ey*ey)<25){G.col=1;lW()}}
-  if(L.n==='🔑 Key Hunt'){
-    // Keys
+  if(L.n==='🔑 PC Builder'){
+    // Collect keys
     if(G.ki)G.ki.forEach(function(k){if(k.c)return;var dx=G.px-k.x,dy=G.py-k.y;if(Math.sqrt(dx*dx+dy*dy)<22){k.c=!0;no('🔑 Key found!')}});
-    // Doors
-    G.doors.forEach(function(d){if(!d.locked)return;var dx=G.px-d.x,dy=G.py-d.y;if(Math.sqrt(dx*dx+dy*dy)<40){var hk=G.ki.filter(function(k){return k.c}).length;if(hk>G.compParts.length){d.locked=!1;G.compParts.push(d.part);G.col++;no('🚪 Unlocked! Found: '+d.part);if(G.col>=G.tot)lW()}else{no('Need a key! Find keys first.')}}});
+    // Unlock doors
+    G.doors.forEach(function(d){if(!d.locked)return;var dx=G.px-d.x,dy=G.py-d.y;if(Math.sqrt(dx*dx+dy*dy)<40){var hk=G.ki.filter(function(k){return k.c}).length;if(hk>d.idx){d.locked=!1;d.opened=!0;G.compParts.push({x:d.x+d.w/2,y:d.y-20,part:d.part,idx:d.idx,collected:!1});no('🚪 Unlocked! Part dropped.')}else{no('Need more keys! ('+hk+'/'+(d.idx+1)+')')}}});
+    // Pick up parts from ground
+    G.compParts.forEach(function(p){if(p.collected||G.carriedPart)return;var dx=G.px-p.x,dy=G.py-p.y;if(Math.sqrt(dx*dx+dy*dy)<25){p.collected=!0;G.carriedPart=p;no('📦 Carrying: '+p.part)}});
+    // Deliver to build station
+    if(G.carriedPart){var dx=G.px-(G.buildStation.x+G.buildStation.w/2),dy=G.py-(G.buildStation.y+G.buildStation.h/2);if(Math.sqrt(dx*dx+dy*dy)<50){G.builtParts.push(G.carriedPart.part);G.carriedPart=null;G.col++;G.thr=Math.min(180,G.thr+20);no('🔧 Built: '+G.builtParts.length+'/4 parts!');if(G.col>=G.tot)lW()}}
   }
   if(L.n==='☕ Coffee Dash'){
     // Coffee machine
@@ -303,7 +310,11 @@ function dr(){
 
   // Keys and doors (level 3)
   if(G.ki)G.ki.forEach(function(k){if(!k.c){ctx.fillStyle='#feca57';ctx.beginPath();ctx.arc(k.x,k.y,12,0,Math.PI*2);ctx.fill();ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('🔑',k.x,k.y+5);ctx.fillStyle='rgba(254,202,87,.2)';ctx.beginPath();ctx.arc(k.x,k.y,18,0,Math.PI*2);ctx.fill()}});
-  if(G.doors)G.doors.forEach(function(d){ctx.fillStyle=d.locked?'rgba(150,100,50,.8)':'rgba(100,150,100,.8)';ctx.fillRect(d.x,d.y,d.w,d.h);ctx.strokeStyle='#8b6914';ctx.lineWidth=2;ctx.strokeRect(d.x,d.y,d.w,d.h);ctx.lineWidth=1;ctx.fillStyle='#fff';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText(d.locked?'🔒':'🔓 '+(d.part||''),d.x+d.w/2,d.y+d.h/2+4);if(!d.locked){ctx.fillStyle='rgba(0,210,211,.15)';ctx.fillRect(d.x,d.y,d.w,d.h)}});
+  if(G.doors)G.doors.forEach(function(d){ctx.fillStyle=d.locked?'rgba(150,100,50,.8)':'rgba(100,150,100,.8)';ctx.fillRect(d.x,d.y,d.w,d.h);ctx.strokeStyle='#8b6914';ctx.lineWidth=2;ctx.strokeRect(d.x,d.y,d.w,d.h);ctx.lineWidth=1;ctx.fillStyle='#fff';ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillText(d.locked?'🔒':(d.opened?'🔓':d.part),d.x+d.w/2,d.y+d.h/2+4);if(!d.locked){ctx.fillStyle='rgba(0,210,211,.15)';ctx.fillRect(d.x,d.y,d.w,d.h)}});
+  // Dropped parts
+  if(G.compParts)G.compParts.forEach(function(p){if(p.collected)return;ctx.fillStyle='#feca57';ctx.beginPath();ctx.arc(p.x,p.y,10,0,Math.PI*2);ctx.fill();ctx.font='8px sans-serif';ctx.textAlign='center';ctx.fillStyle='#000';ctx.fillText('📦',p.x,p.y+4)});
+  // Build station
+  if(G.buildStation){ctx.fillStyle='rgba(0,210,211,.1)';ctx.fillRect(G.buildStation.x,G.buildStation.y,G.buildStation.w,G.buildStation.h);ctx.strokeStyle='#00d2d3';ctx.setLineDash([3,3]);ctx.strokeRect(G.buildStation.x,G.buildStation.y,G.buildStation.w,G.buildStation.h);ctx.setLineDash([]);ctx.fillStyle='#00d2d3';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('🔧 BUILD',G.buildStation.x+G.buildStation.w/2,G.buildStation.y+30);ctx.fillStyle='#fff';ctx.font='9px sans-serif';ctx.fillText(G.builtParts.length+'/4',G.buildStation.x+G.buildStation.w/2,G.buildStation.y+18)}
 
   // Coffee machine + coworkers (level 4)
   if(L.n==='☕ Coffee Dash'){ctx.fillStyle='#8b6914';ctx.fillRect(G.coffeeMachine.x-15,G.coffeeMachine.y-20,30,40);ctx.fillStyle='#feca57';ctx.font='20px sans-serif';ctx.textAlign='center';ctx.fillText('☕',G.coffeeMachine.x,G.coffeeMachine.y+10);ctx.fillStyle='#fff';ctx.font='9px sans-serif';ctx.fillText('Machine',G.coffeeMachine.x,G.coffeeMachine.y-24);
@@ -326,6 +337,8 @@ function dr(){
   if(G.hid){ctx.fillStyle='rgba(0,210,211,.45)';ctx.font='13px sans-serif';ctx.textAlign='center';ctx.fillText('HIDDEN',G.px,G.py-35)}
   // Coffee held
   if(G.hasCoffee){ctx.fillStyle='#feca57';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('☕',G.px+18,G.py-10)}
+  // Carried item
+  if(G.carriedPart){ctx.fillStyle='#feca57';ctx.font='13px sans-serif';ctx.textAlign='center';ctx.fillText('📦 '+G.carriedPart.part,G.px,G.py-40)}
   if(closeMon){ctx.fillStyle='rgba(233,69,96,.6)';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('⚠️',G.px,G.py-50)}
 }
 
