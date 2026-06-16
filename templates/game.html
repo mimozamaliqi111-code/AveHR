@@ -114,12 +114,12 @@ var LV=[
   // LEVEL 1: Shelf Memory — Picture items + Drag & Drop
   {n:'📚 Shelf Memory',d:'Memorize the shelf, then drag items back!',
    s:function(){G.px=700;G.py=520;G.hr=70;G.thr=70;G.mx=100;G.my=80;G.ms=1.2;G.mst='patrol';
-    var items=[{ic:'report',label:'Reports',color:'#4a90d9'},{ic:'pen',label:'Pens',color:'#e94560'},{ic:'clip',label:'Clips',color:'#c0c0c0'},{ic:'folder',label:'Folders',color:'#c4956a'},{ic:'chart',label:'Charts',color:'#00d2d3'},{ic:'binder',label:'Binders',color:'#2d3436'},{ic:'mail',label:'Mail',color:'#feca57'},{ic:'pin',label:'Pins',color:'#e94560'}];
-    var sx=100,sy=80,sw=140,sh=110,cols=4;
+    var items=[{ic:'report',label:'Reports',color:'#4a90d9'},{ic:'pen',label:'Pens',color:'#e94560'},{ic:'clip',label:'Clips',color:'#c0c0c0'},{ic:'folder',label:'Folders',color:'#c4956a'},{ic:'chart',label:'Charts',color:'#00d2d3'}];
+    var sx=100,sy=150,sw=140,sh=130,cols=5;
     G.shelfSlots=[];G.shelfItems=[];
-    for(var i=0;i<8;i++){var col=i%cols,row=Math.floor(i/cols);G.shelfSlots.push({x:sx+col*sw,y:sy+row*sh,w:sw-10,h:sh-10,item:items[i],idx:i})}
-    G.items=items.map(function(it,i){return{x:560+Math.random()*180,y:380+Math.random()*180,c:!1,data:it,oi:i,placed:null,w:60,h:50}});
-    G.tot=8;G.col=0;G.mp='show';G.mt=300;
+    for(var i=0;i<5;i++){var col=i%cols,row=Math.floor(i/cols);G.shelfSlots.push({x:sx+col*sw,y:sy+row*sh,w:sw-10,h:sh-10,item:items[i],idx:i})}
+    G.items=items.map(function(it,i){return{x:560+Math.random()*180,y:420+Math.random()*140,c:!1,data:it,oi:i,placed:null,w:60,h:50}});
+    G.tot=5;G.col=0;G.mp='show';G.mt=300;
     G.hs=[];
     G.obj='Memorize the shelf layout! Drag items back.'}},
   // LEVEL 2: Maze Exit
@@ -207,7 +207,7 @@ function up(){
 
   // Level-specific
   if(L.n==='📚 Shelf Memory'){
-    if(G.mp==='show'){G.mt--;if(G.mt<=0){G.mp='hide';G.items.forEach(function(it,i){it.x=530+(i*22)%180;it.y=380+(i*31)%160;it.c=!1;it.placed=null})}}
+    if(G.mp==='show'){G.mt--;if(G.mt<=0){G.mp='hide';G.items.forEach(function(it,i){it.x=560+(i*25)%180;it.y=420+(i*35)%140;it.c=!1;it.placed=null})}}
   }
   if(L.n==='🗺️ Maze Exit'&&G.exitPos){var ex=G.px-G.exitPos.x,ey=G.py-G.exitPos.y;if(Math.sqrt(ex*ex+ey*ey)<25){G.col=1;lW()}}
   if(L.n==='🔑 Key Hunt'){
